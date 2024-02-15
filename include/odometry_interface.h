@@ -11,11 +11,11 @@
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <nav_msgs/Odometry.h>
 
-class PoseEstimate
+class OdometryInterface
 {
 public:
-    PoseEstimate(const ros::Publisher& posePublisher, const ros::Publisher& velocityPublisher);
-    ~PoseEstimate() = default;
+    OdometryInterface(const ros::Publisher& posePublisher, const ros::Publisher& velocityPublisher);
+    ~OdometryInterface() = default;
 
     void DoSlamState(const sgtdv_msgs::CarPose::ConstPtr &msg);
     // void DoIMU(/*imu msg*/);

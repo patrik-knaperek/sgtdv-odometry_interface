@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(pose_estimate)
+project(odometry_interface)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
@@ -22,7 +22,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME} src/PoseEstimateNODE.cpp src/PoseEstimate.cpp )
+add_executable(${PROJECT_NAME} src/odometry_interface_node.cpp src/odometry_interface.cpp )
 
 target_link_libraries(pose_estimate
   ${catkin_LIBRARIES}

@@ -4,16 +4,16 @@
 /*****************************************************/
 
 
-#include "../include/PoseEstimate.h"
+#include "../include/odometry_interface.h"
 #include <tf/tf.h>
 
-PoseEstimate::PoseEstimate(const ros::Publisher& posePublisher, const ros::Publisher& velocityPublisher)
+OdometryInterface::OdometryInterface(const ros::Publisher& posePublisher, const ros::Publisher& velocityPublisher)
 : m_posePublisher(posePublisher)
 , m_velocityPublisher(velocityPublisher)
 {
 }
 
-void PoseEstimate::DoSlamState(const sgtdv_msgs::CarPose::ConstPtr &msg)
+void OdometryInterface::DoSlamState(const sgtdv_msgs::CarPose::ConstPtr &msg)
 {
     m_carPoseMsg.position = msg->position;
     m_carPoseMsg.yaw = msg->yaw;
@@ -21,7 +21,7 @@ void PoseEstimate::DoSlamState(const sgtdv_msgs::CarPose::ConstPtr &msg)
     m_posePublisher.publish(m_carPoseMsg);
 }
 
-// void PoseEstimate::DoIMU()//imu msg)
+// void OdometryInterface::DoIMU()//imu msg)
 // {
 //     //m_currentState.position +=
 //     //m_currentState.yaw = 
@@ -29,7 +29,7 @@ void PoseEstimate::DoSlamState(const sgtdv_msgs::CarPose::ConstPtr &msg)
 //     SendCarPose();
 // }
 
-void PoseEstimate::DoCameraPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg)
+void OdometryInterface::DoCameraPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg)
 {
     m_carPoseMsg.position.x = msg->pose.pose.position.x;
     m_carPoseMsg.position.y = msg->pose.pose.position.y;
@@ -48,7 +48,7 @@ void PoseEstimate::DoCameraPose(const geometry_msgs::PoseWithCovarianceStamped::
     m_posePublisher.publish(m_carPoseMsg);
 }
 
-void PoseEstimate::DoOdometry(const nav_msgs::Odometry::ConstPtr &msg)
+void OdometryInterface::DoOdometry(const nav_msgs::Odometry::ConstPtr &msg)
 {
     m_carPoseMsg.position.x = msg->pose.pose.position.x;
     m_carPoseMsg.position.y = msg->pose.pose.position.y;
