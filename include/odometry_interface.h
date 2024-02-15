@@ -13,7 +13,7 @@
 class OdometryInterface
 {
 public:
-  OdometryInterface(const ros::Publisher& posePublisher, const ros::Publisher& velocityPublisher);
+  OdometryInterface(ros::NodeHandle& nh);
   ~OdometryInterface() = default;
 
   void doSlamState(const sgtdv_msgs::CarPose::ConstPtr &msg);
@@ -23,6 +23,9 @@ public:
 
 private:
   ros::Publisher pose_pub_, velocity_pub_;
+  ros::Subscriber odometry_sub_;
+  ros::Subscriber camera_pose_sub_;
+
   sgtdv_msgs::CarPose car_pose_msg_;
   sgtdv_msgs::CarVel car_vel_msg_;
 };
