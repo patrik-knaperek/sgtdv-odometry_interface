@@ -13,25 +13,9 @@ OdometryInterface::OdometryInterface(ros::NodeHandle& nh) :
   velocity_pub_(nh.advertise<sgtdv_msgs::CarVel>("velocity_estimate", 1)),
 
   odometry_sub_(nh.subscribe("odometry/filtered", 1, &OdometryInterface::doOdometry, this))
-  , camera_pose_sub_(nh.subscribe("camera_pose", 1, &OdometryInterface::doCameraPose, this))
+  // , camera_pose_sub_(nh.subscribe("camera_pose", 1, &OdometryInterface::doCameraPose, this))
 {
 }
-
-void OdometryInterface::doSlamState(const sgtdv_msgs::CarPose::ConstPtr &msg)
-{
-  car_pose_msg_.position = msg->position;
-  car_pose_msg_.yaw = msg->yaw;
-
-  pose_pub_.publish(car_pose_msg_);
-}
-
-// void OdometryInterface::DoIMU()//imu msg)
-// {
-//     //m_currentState.position +=
-//     //m_currentState.yaw = 
-
-//     SendCarPose();
-// }
 
 void OdometryInterface::doCameraPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg)
 {
