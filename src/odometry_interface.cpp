@@ -12,11 +12,15 @@ OdometryInterface::OdometryInterface(ros::NodeHandle& nh) :
   pose_pub_(nh.advertise<sgtdv_msgs::CarPose>("pose_estimate", 1)),
   velocity_pub_(nh.advertise<sgtdv_msgs::CarVel>("velocity_estimate", 1)),
 
+#ifdef CAMERA_POSE_INTERFACE
+  camera_pose_sub_(nh.subscribe("camera_pose", 1, &OdometryInterface::doCameraPose, this))
+#else
   odometry_sub_(nh.subscribe("odometry/filtered", 1, &OdometryInterface::doOdometry, this))
-  // , camera_pose_sub_(nh.subscribe("camera_pose", 1, &OdometryInterface::doCameraPose, this))
+#endif
 {
 }
 
+#ifdef CAMERA_POSE_INTERFACE
 void OdometryInterface::doCameraPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg)
 {
   car_pose_msg_.position.x = msg->pose.pose.position.x;
@@ -35,7 +39,7 @@ void OdometryInterface::doCameraPose(const geometry_msgs::PoseWithCovarianceStam
     
   pose_pub_.publish(car_pose_msg_);
 }
-
+#else
 void OdometryInterface::doOdometry(const nav_msgs::Odometry::ConstPtr &msg)
 {
   car_pose_msg_.position.x = msg->pose.pose.position.x;
@@ -58,3 +62,4 @@ void OdometryInterface::doOdometry(const nav_msgs::Odometry::ConstPtr &msg)
   pose_pub_.publish(car_pose_msg_);
   velocity_pub_.publish(car_vel_msg_);
 }
+#endif
