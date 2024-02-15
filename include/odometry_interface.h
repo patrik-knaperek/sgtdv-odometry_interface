@@ -17,12 +17,12 @@ public:
     OdometryInterface(const ros::Publisher& posePublisher, const ros::Publisher& velocityPublisher);
     ~OdometryInterface() = default;
 
-    void DoSlamState(const sgtdv_msgs::CarPose::ConstPtr &msg);
+    void doSlamState(const sgtdv_msgs::CarPose::ConstPtr &msg);
     // void DoIMU(/*imu msg*/);
-    void DoCameraPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg);
-    void DoOdometry(const nav_msgs::Odometry::ConstPtr &msg);
+    void doCameraPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg);
+    void doOdometry(const nav_msgs::Odometry::ConstPtr &msg);
 private:
-    ros::Publisher m_posePublisher, m_velocityPublisher;
-    sgtdv_msgs::CarPose m_carPoseMsg;
-    sgtdv_msgs::CarVel m_carVelMsg;
+    ros::Publisher pose_pub_, velocity_pub_;
+    sgtdv_msgs::CarPose car_pose_msg_;
+    sgtdv_msgs::CarVel car_vel_msg_;
 };

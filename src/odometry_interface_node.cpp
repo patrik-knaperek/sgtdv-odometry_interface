@@ -23,7 +23,7 @@ int main(int argc, char** argv)
     // ros::Subscriber slamSub = handle.subscribe("slam_pose", 1, &OdometryInterface::DoSlamState, &odometry_interface);
     //ros::Subscriber imuSub = handle.subscribe("imu", 1, &OdometryInterface::DoIMU, &odometry_interface);
     // ros::Subscriber cameraSub = handle.subscribe("camera_pose", 1, &OdometryInterface::DoCameraPose, &odometry_interface);
-    ros::Subscriber odomSub = handle.subscribe("odometry/filtered", 1, &OdometryInterface::DoOdometry, &odometry_interface);
+    ros::Subscriber odomSub = handle.subscribe("odometry/filtered", 1, &OdometryInterface::doOdometry, &odometry_interface);
 
     ros::spin();
 

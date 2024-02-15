@@ -8,17 +8,17 @@
 #include <tf/tf.h>
 
 OdometryInterface::OdometryInterface(const ros::Publisher& posePublisher, const ros::Publisher& velocityPublisher)
-: m_posePublisher(posePublisher)
-, m_velocityPublisher(velocityPublisher)
+: pose_pub_(posePublisher)
+, velocity_pub_(velocityPublisher)
 {
 }
 
-void OdometryInterface::DoSlamState(const sgtdv_msgs::CarPose::ConstPtr &msg)
+void OdometryInterface::doSlamState(const sgtdv_msgs::CarPose::ConstPtr &msg)
 {
-    m_carPoseMsg.position = msg->position;
-    m_carPoseMsg.yaw = msg->yaw;
+    car_pose_msg_.position = msg->position;
+    car_pose_msg_.yaw = msg->yaw;
 
-    m_posePublisher.publish(m_carPoseMsg);
+    pose_pub_.publish(car_pose_msg_);
 }
 
 // void OdometryInterface::DoIMU()//imu msg)
@@ -29,10 +29,10 @@ void OdometryInterface::DoSlamState(const sgtdv_msgs::CarPose::ConstPtr &msg)
 //     SendCarPose();
 // }
 
-void OdometryInterface::DoCameraPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg)
+void OdometryInterface::doCameraPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg)
 {
-    m_carPoseMsg.position.x = msg->pose.pose.position.x;
-    m_carPoseMsg.position.y = msg->pose.pose.position.y;
+    car_pose_msg_.position.x = msg->pose.pose.position.x;
+    car_pose_msg_.position.y = msg->pose.pose.position.y;
 
     tf::Quaternion q(
 			msg->pose.pose.orientation.x,
@@ -43,15 +43,15 @@ void OdometryInterface::DoCameraPose(const geometry_msgs::PoseWithCovarianceStam
 
     double roll, pitch, yaw;
 	m.getRPY(roll, pitch, yaw);
-	m_carPoseMsg.yaw = yaw;
+	car_pose_msg_.yaw = yaw;
     
-    m_posePublisher.publish(m_carPoseMsg);
+    pose_pub_.publish(car_pose_msg_);
 }
 
-void OdometryInterface::DoOdometry(const nav_msgs::Odometry::ConstPtr &msg)
+void OdometryInterface::doOdometry(const nav_msgs::Odometry::ConstPtr &msg)
 {
-    m_carPoseMsg.position.x = msg->pose.pose.position.x;
-    m_carPoseMsg.position.y = msg->pose.pose.position.y;
+    car_pose_msg_.position.x = msg->pose.pose.position.x;
+    car_pose_msg_.position.y = msg->pose.pose.position.y;
 
     tf::Quaternion q(
 			msg->pose.pose.orientation.x,
@@ -62,11 +62,11 @@ void OdometryInterface::DoOdometry(const nav_msgs::Odometry::ConstPtr &msg)
 
     double roll, pitch, yaw;
 	m.getRPY(roll, pitch, yaw);
-	m_carPoseMsg.yaw = yaw;
+	car_pose_msg_.yaw = yaw;
 
-    m_carVelMsg.speed = msg->twist.twist.linear.x;
-    m_carVelMsg.yawRate = msg->twist.twist.angular.z;
+    car_vel_msg_.speed = msg->twist.twist.linear.x;
+    car_vel_msg_.yaw_rate = msg->twist.twist.angular.z;
 
-    m_posePublisher.publish(m_carPoseMsg);
-    m_velocityPublisher.publish(m_carVelMsg);
+    pose_pub_.publish(car_pose_msg_);
+    velocity_pub_.publish(car_vel_msg_);
 }
