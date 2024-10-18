@@ -19,17 +19,16 @@
 class OdometryInterface
 {
 public:
-  OdometryInterface(ros::NodeHandle& nh);
+  explicit OdometryInterface(ros::NodeHandle& nh);
   ~OdometryInterface() = default;
 
+private:
 #ifdef CAMERA_POSE_INTERFACE
   void doCameraPose(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg);
 #else
     void doOdometry(const nav_msgs::Odometry::ConstPtr &msg);
 #endif
 
-
-private:
   ros::Publisher pose_pub_, velocity_pub_;
 
 #ifdef CAMERA_POSE_INTERFACE

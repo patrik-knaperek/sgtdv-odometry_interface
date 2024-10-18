@@ -18,7 +18,9 @@ catkin_package(
 )
 
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
+  ${CMAKE_SOURCE_DIR}/../
 )
 
 add_executable(${PROJECT_NAME} src/odometry_interface_node.cpp src/odometry_interface.cpp )

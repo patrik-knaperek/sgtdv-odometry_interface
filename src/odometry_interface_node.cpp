@@ -3,7 +3,7 @@
 /* Authors: Patrik Knaperek
 /*****************************************************/
 
-#include "../include/odometry_interface.h"
+#include "odometry_interface.h"
 
 int main(int argc, char** argv)
 {

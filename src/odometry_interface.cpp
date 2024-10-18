@@ -4,7 +4,7 @@
 /*****************************************************/
 
 
-#include "../include/odometry_interface.h"
+#include "odometry_interface.h"
 #include <tf/tf.h>
 
 OdometryInterface::OdometryInterface(ros::NodeHandle& nh) :
