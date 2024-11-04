@@ -1,8 +1,7 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(pose_estimate)
+cmake_minimum_required(VERSION 3.0.2)
+project(odometry_interface)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+add_compile_options(-std=c++14)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -19,12 +18,14 @@ catkin_package(
 )
 
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
+  ${CMAKE_SOURCE_DIR}/../
 )
 
-add_executable(${PROJECT_NAME} src/PoseEstimateNODE.cpp src/PoseEstimate.cpp )
+add_executable(${PROJECT_NAME} src/odometry_interface_node.cpp src/odometry_interface.cpp )
 
-target_link_libraries(pose_estimate
+target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}
 )
 
