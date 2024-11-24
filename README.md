@@ -14,8 +14,8 @@ ___
 * [`camera_driver`](../camera_driver/README.md)
 
 ### Topic conversions
-* `/odometry/filtered [nav_msgs/Odometry]` →  `/slam_pose [sgtdv_msgs/CarPose]`, `/velocity_estimate [sgtdv_msgs/CarVel]`
-* (alternatively) `/camera_pose [geometry_msgs/PoseWithCovarianceStamped]` → `/pose_estimate [sgtdv_msgs/CarPose]`
+* `/odometry/filtered [nav_msgs/Odometry]` →  `/slam/pose [sgtdv_msgs/CarPose]`, `/odometry/velocity [sgtdv_msgs/CarVel]`
+* (alternatively) `/camera/pose [geometry_msgs/PoseWithCovarianceStamped]` → `/odometry/pose [sgtdv_msgs/CarPose]`
 
 
 ## Compilation

@@ -9,11 +9,11 @@
 
 OdometryInterface::OdometryInterface(ros::NodeHandle& nh) :
   /* ROS interface init */
-  pose_pub_(nh.advertise<sgtdv_msgs::CarPose>("pose_estimate", 1)),
-  velocity_pub_(nh.advertise<sgtdv_msgs::CarVel>("velocity_estimate", 1)),
+  pose_pub_(nh.advertise<sgtdv_msgs::CarPose>("odometry/pose", 1)),
+  velocity_pub_(nh.advertise<sgtdv_msgs::CarVel>("odometry/velocity", 1)),
 
 #ifdef CAMERA_POSE_INTERFACE
-  camera_pose_sub_(nh.subscribe("camera_pose", 1, &OdometryInterface::doCameraPose, this))
+  camera_pose_sub_(nh.subscribe("camera/pose", 1, &OdometryInterface::doCameraPose, this))
 #else
   odometry_sub_(nh.subscribe("odometry/filtered", 1, &OdometryInterface::doOdometry, this))
 #endif
