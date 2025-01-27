@@ -3,19 +3,25 @@
 /* Authors: Patrik Knaperek
 /*****************************************************/
 
-
-#include "odometry_interface.h"
+/* ROS */
 #include <tf/tf.h>
+#include <std_msgs/Empty.h>
 
-OdometryInterface::OdometryInterface(ros::NodeHandle& nh) :
+/* Header */
+#include "odometry_interface.h"
+
+OdometryInterface::OdometryInterface(ros::NodeHandle& nh)
   /* ROS interface init */
-  pose_pub_(nh.advertise<sgtdv_msgs::CarPose>("odometry/pose", 1)),
-  velocity_pub_(nh.advertise<sgtdv_msgs::CarVel>("odometry/velocity", 1)),
+  : pose_pub_(nh.advertise<sgtdv_msgs::CarPose>("odometry/pose", 1))
+  , velocity_pub_(nh.advertise<sgtdv_msgs::CarVel>("odometry/velocity", 1))
+  , reset_odom_server_(nh.advertiseService("/reset_odometry", &OdometryInterface::resetOdomCallback, this))
+  , vesc_reset_odom_pub_(nh.advertise<std_msgs::Empty>("vesc/vesc_to_odom/reset_odometry", 1))
+  , camera_reset_odom_client_("/camera/reset_odometry")
 
 #ifdef CAMERA_POSE_INTERFACE
-  camera_pose_sub_(nh.subscribe("camera/pose", 1, &OdometryInterface::doCameraPose, this))
+  , camera_pose_sub_(nh.subscribe("camera/pose", 1, &OdometryInterface::doCameraPose, this))
 #else
-  odometry_sub_(nh.subscribe("odometry/filtered", 1, &OdometryInterface::doOdometry, this))
+  , odometry_sub_(nh.subscribe("odometry/filtered", 1, &OdometryInterface::doOdometry, this))
 #endif
 {
 }
@@ -63,3 +69,17 @@ void OdometryInterface::doOdometry(const nav_msgs::Odometry::ConstPtr &msg)
   velocity_pub_.publish(car_vel_msg_);
 }
 #endif
+
+bool OdometryInterface::resetOdomCallback(std_srvs::Empty::Request& req, std_srvs::Empty::Response& res)
+{
+  ROS_INFO("Resetting odometry");
+  
+  if(!ros::service::call(camera_reset_odom_client_, empty_srv_))
+  {
+    ROS_WARN_STREAM("Service \"" << camera_reset_odom_client_ << "\" failed");
+  }
+
+  vesc_reset_odom_pub_.publish(std_msgs::Empty());
+
+  return true;
+}

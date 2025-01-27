@@ -17,6 +17,11 @@ ___
 * `/odometry/filtered [nav_msgs/Odometry]` →  `/slam/pose [sgtdv_msgs/CarPose]`, `/odometry/velocity [sgtdv_msgs/CarVel]`
 * (alternatively) `/camera/pose [geometry_msgs/PoseWithCovarianceStamped]` → `/odometry/pose [sgtdv_msgs/CarPose]`
 
+### Reset odometry service
+The package provides a common service ensuring odometry reset among all odometry sources (currently VESC and ZED camera).
+```sh
+$ rosservice call /reset_odometry
+```
 
 ## Compilation
 ```sh
